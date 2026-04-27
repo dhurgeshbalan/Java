@@ -1,0 +1,34 @@
+import java.util.Arrays;
+
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        int[] candies = new int[n];
+        
+        // 1. Every child gets at least one candy
+        Arrays.fill(candies, 1);
+        
+        // 2. Left-to-Right Pass: Compare with left neighbor
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+        
+        // 3. Right-to-Left Pass: Compare with right neighbor
+        for (int i = n - 2; i >= 0; i--) {
+            if (ratings[i] > ratings[i + 1]) {
+                // Take max to satisfy both left and right conditions
+                candies[i] = Math.max(candies[i], candies[i + 1] + 1);
+            }
+        }
+        
+        // 4. Sum the total candies
+        int totalCandies = 0;
+        for (int candyCount : candies) {
+            totalCandies += candyCount;
+        }
+        
+        return totalCandies;
+    }
+}
